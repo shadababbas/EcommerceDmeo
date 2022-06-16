@@ -1,0 +1,17 @@
+21:47:21 PM
+Source : EcommerceDemo.Controllers.CategoryMasterController
+Method Name : Edit
+Error Line No : 92
+Exception Type : System.NullReferenceException
+Details: Object reference not set to an instance of an object.
+--------------------------------------------------------------------------------------------------------------------------------
+
+23:03:48 PM
+Source : EcommerceDemo.Controllers.ProductMasterController
+Method Name : loaddata
+Error Line No : 24
+Exception Type : System.Data.Entity.Core.MappingException
+Details: Schema specified is not valid. Errors: 
+Models.Model1.msl(21,12) : error 2019: Member Mapping specified is not valid. The type 'Edm.Decimal[Nullable=True,DefaultValue=,Precision=,Scale=]' of member 'Price' in type 'EcommerceDemoModel.TBL_Products' is not compatible with 'SqlServer.bigint[Nullable=True,DefaultValue=]' of member 'Price' in type 'EcommerceDemoModel.Store.TBL_Products'.
+---------------------------------------------------------------------------------------------------------------------------
+

@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="db-bx p-4 mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h3 class="mb-0"><strong>Product Master</strong></h3>
+        </div>
+        <div>
+            <a href="/ProductMaster/Create" class="btn btn-primary">Add New Product</a>
+        </div>
+    </div>
+</div>
+
+
+<div class="mt-4">
+    <div class="db-bx p-4">
+        <div class="table-responsive tb-res-1">
+            <div style="margin-top:10px;">
+                <table id="myTable">
+                    <thead>
+                        <tr>
+                            <th>Category Name</th>
+                            <th>Product Name</th>
+                            <th>Price</th>
+                            <th>Created Date</th>
+                            <th>Edit/Delete</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <style>
+                tr.even {
+                    background-color: #F5F5F5 !important;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            </style>
+            @* Load datatable css *@
+            <link href="//cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" rel="stylesheet" />
+            @* Load datatable js *@
+            @section Scripts{
+                <script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+                <script>
+                    $(document).ready(function () {
+                        $('#myTable').DataTable({
+                            "ajax": {
+                                "url": "/ProductMaster/loaddata",
+                                "type": "GET",
+                                "datatype": "json"
+                            },
+                            "columns": [
+
+                                { "data": "CategoryName", "autoWidth": true },
+                                { "data": "ProductName", "autoWidth": true },
+                                { "data": "Price", "autoWidth": true },
+                                { "data": "CreatedDate", "autoWidth": true },
+                                {
+                                    "data": "ID",
+                                    fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                        $(nTd).html("<a href='/ProductMaster/Edit/" + oData.ID + "' class='mr-2'><img src='../images/icon-9.png'></a> <a href='javascript:void(0)' class='btnDelete' data-Id=" + oData.ID + " class='mr-2'><img src='../images/icon-11.png'></a>");
+                                    },
+                                    "autoWidth": true
+                                }
+                            ]
+                        });
+                    });
+
+                    $('#myTable').on('click', '.btnDelete', function () {
+                        if (confirm("Do you want to delete the Category ?")) {
+
+                            var id = $(this).attr('data-Id');
+                            $.ajax({
+                                url: "/Common/deletemethod",
+                                type: 'POST',
+                                data: {
+                                    id: id,
+                                    Table_Name: "TBL_Products",
+                                    Coulmn_Name: "ID"
+                                },
+                                success: function (data) {
+                                    var jsonData = JSON.parse(data);
+                                    if (jsonData == "1") {
+                                        //tblpdList.ajax.reload();
+                                        alert("Product deleted successfully ");
+                                        setTimeout(
+                                            function () {
+                                                window.location.href = "/ProductMaster/Index";
+                                            }, 1000);
+                                    }
+                                    else {
+                                        alert('Error');
+                                    }
+                                },
+                                error: function (data) {
+                                    alert('Error');
+                                }
+                            });
+                        }
+                    });
+                </script>
+            }
+
+        </div>
+    </div>
+
+</div>
+
